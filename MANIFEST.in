@@ -1,0 +1,8 @@
+include AUTHORS
+include ChangeLog
+exclude .gitignore
+exclude .gitreview
+
+recursive-include xstatic/pkg/app_catalog_common *
+
+global-exclude *.pyc
