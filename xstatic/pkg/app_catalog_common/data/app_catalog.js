@@ -156,7 +156,8 @@
             asset.service.type == 'bundle') {
           var filteredOut = false;
           angular.forEach(asset.depends, function(dep) {
-            if ($scope.service_filters_selections[dep.asset.service.type] == false) {
+            if ('asset' in dep &&
+                $scope.service_filters_selections[dep.asset.service.type] == false) {
               filteredOut = true;
             }
           });
@@ -526,17 +527,22 @@
     angular.forEach($scope.assets, function(asset) {
       assetNameToAsset[asset.name] = asset;
     });
-    angular.forEach($scope.assets, function(asset) {
-      asset.disabled = false;
-      if ('depends' in asset) {
-        angular.forEach(asset.depends, function(dep) {
-          dep.asset = assetNameToAsset[dep.name];
-          if('disabled' in asset && dep.asset.disabled) {
-            asset.disabled = true;
-          }
-        });
-      }
-    });
+    //FIXME This code will break once we do incomplete searches.
+    function processDeps(asset) {
+        if(!('depends' in asset)) {
+            asset.disabled = false;
+            if ('depends' in asset) {
+              angular.forEach(asset.depends, function(dep) {
+                dep.asset = assetNameToAsset[dep.name];
+                processDeps(dep.asset);
+                if(dep.asset.disabled) {
+                  asset.disabled = true;
+                }
+              });
+            }
+        }
+    };
+    angular.forEach($scope.assets, processDeps);
     $scope.update_assets_filtered();
   }
 
