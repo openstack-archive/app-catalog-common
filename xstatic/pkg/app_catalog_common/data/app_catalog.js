@@ -1,6 +1,6 @@
 /*
  * Copyright 2015 IBM Corp.
- * Copyright 2015 Kevin Fox.
+ * Copyright 2016 Kevin Fox.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -65,21 +65,37 @@
     };
     this.assets = [];
     this.assets_filtered = [];
-//FIXME reduce duplication here....
-    this.supported_service_type_to_label = {
-      heat: 'Orchestration',
-      glance: 'Images',
-      murano: 'Murano'
-    };
+    this.supported_service_type_to_label = {}
+    this.service_filters_selections = {}
+    this.asset_filter_facets = [
+      {
+        name: 'name',
+        label: gettext('Name'),
+        singleton: true
+      },
+      {
+        name: 'license',
+        label: gettext('License'),
+        singleton: true
+      },
+      {
+        name: 'service.type',
+        label: gettext('Service Type'),
+        options: [], //To be filled in below
+        singleton: true
+      }];
     this.service_filters = [
       {id:'heat', name:'Orchestration'},
       {id:'glance', name: 'Images'},
-      {id:'murano', name: 'Murano'}
+      {id:'murano', name: 'Murano'},
+      {id:'tosca', name: 'TOSCA'},
     ];
-    this.service_filters_selections = {
-      'heat':false,
-      'glance':false,
-      'murano':false
+    var i;
+    for (i = 0; i < this.service_filters.length; i++) {
+      var e = this.service_filters[i];
+      this.supported_service_type_to_label[e.id] = e.name;
+      this.service_filters_selections[e.id] = false;
+      this.asset_filter_facets[2]['options'].push({key: e.id, label: e.name});
     };
     var notifyUpdate = function() {
       angular.forEach(callbacks.update, function(callback) {
@@ -371,28 +387,6 @@
       remove: gettext('Remove'),
       text: gettext('Text')
     };
-    this.asset_filter_facets = [
-      {
-        name: 'name',
-        label: gettext('Name'),
-        singleton: true
-      },
-      {
-        name: 'license',
-        label: gettext('License'),
-        singleton: true
-      },
-      {
-        name: 'service.type',
-        label: gettext('Service Type'),
-//FIXME make dynamic later.
-        options: [
-          {key: 'heat', label: 'Orchestration'},
-          {key: 'glance', label: 'Images'},
-          {key: 'murano', label: 'Murano'}
-        ],
-        singleton: true
-      }];
   }
   function commonInit($scope, $modal, toast, appCatalogModel) {
     $scope.WEBROOT = WEBROOT;

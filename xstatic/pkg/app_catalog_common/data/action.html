@@ -44,6 +44,9 @@
         </div>
       </div>
     </div>
+    <div ng-switch-when="tosca">
+      <a ng-class="extraclasses" class="btn btn-default disabled ajax-modal" href="/">Unsupported</a>
+    </div>
     <div ng-switch-default>
       <a ng-switch-when="false" ng-class="extraclasses" class="btn btn-default disabled ajax-modal" href="/">Unsupported</a>
     </div>
