@@ -1,0 +1,8 @@
+Code-Review+2: Christopher Aedo <doc@aedo.net>
+Workflow+1: Christopher Aedo <doc@aedo.net>
+Verified+2: Zuul
+Submitted-by: Zuul
+Submitted-at: Sun, 10 Dec 2017 18:59:52 +0000
+Reviewed-on: https://review.openstack.org/526938
+Project: openstack/app-catalog-common
+Branch: refs/heads/master
